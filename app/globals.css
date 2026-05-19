@@ -128,3 +128,27 @@
     @apply font-sans;
   }
 }
+
+@media (min-width: 640px) {
+  .w-screen {
+    width: 100% !important;
+  }
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+@media (min-width: 640px) {
+  .w-screen {
+    width: 100% !important;
+  }
+
+  .min-h-screen,
+  .min-h-\[100dvh\] {
+    max-width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
