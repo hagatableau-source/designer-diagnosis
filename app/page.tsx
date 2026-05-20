@@ -826,11 +826,11 @@ const [phase, setPhase] = useState<Phase>("cover");
 
 if (phase === "cover") {
   return (
-    <div className="mx-auto w-full max-w-[430px] h-[100dvh] overflow-hidden bg-black relative">
+    <div className="w-screen h-[100dvh] overflow-hidden bg-black relative">
       <img
         src="/top-in.png"
         alt=""
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+        className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none select-none"
       />
 
       {/* TOP右上のinfo */}
@@ -1033,9 +1033,9 @@ if (phase === "cover") {
 
   if (phase === "profile") {
     return (
-        <div className="h-[100dvh] w-screen overflow-hidden">
+        <div className="min-h-[100dvh] w-screen overflow-x-hidden">
   <div
-    className="w-screen h-[100dvh] overflow-y-auto px-5 py-6 space-y-8 bg-cover bg-center bg-no-repeat"
+    className="w-screen min-h-[100dvh] px-5 py-6 space-y-8 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/bg.png')" }}
         >
           <div className="flex items-center justify-between">
@@ -1063,7 +1063,7 @@ if (phase === "cover") {
           </h1>
 
           <p className="text-neutral-500 leading-7">
-            あなたの「認知構造」を<br />AIが解析します
+            あなたの「認知構造」をAIが解析します
           </p>
 
           <div className="space-y-4">
@@ -1148,10 +1148,10 @@ if (phase === "cover") {
 if (phase === "phaseIntro") {
   return (
     <div
-  className="w-screen h-[100dvh] overflow-hidden bg-cover bg-center bg-no-repeat"
+      className="w-screen min-h-[100dvh] overflow-x-hidden bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-      <div className="h-[100dvh] px-8 py-8 space-y-8 text-center flex flex-col justify-center overflow-y-auto">
+      <div className="min-h-[100dvh] px-8 py-8 space-y-8 text-center flex flex-col justify-center">
         <div className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm mx-auto">
           <Brain className="w-4 h-4" />
           Cognitive Phase
@@ -1427,11 +1427,11 @@ if (phase === "phaseIntro") {
   }
 
   return (
- <div
-  className="w-screen h-[100dvh] overflow-hidden bg-cover bg-center bg-no-repeat"
+  <div
+  className="w-screen min-h-[100dvh] overflow-x-hidden bg-cover bg-center bg-no-repeat"
   style={{ backgroundImage: "url('/bg.png')" }}
 >
-  <div className="h-[100dvh] px-5 py-6 overflow-y-auto">
+  <div className="min-h-[100dvh] px-5 py-6">
         <div className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm">
           <Brain className="w-4 h-4" />
           Cognitive Observation
