@@ -850,6 +850,11 @@ if (phase === "cover") {
         解 析 を 開 始 す る
       </button>
 
+
+      <p className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-[10px] tracking-wide text-gray-500 whitespace-nowrap">  
+       © 2026 Graphic Center Niigata / Haga Masaaki
+      </p>
+
       {showMenu && (
         <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
           <div
@@ -977,6 +982,7 @@ if (phase === "cover") {
             </div>
           )}
 
+
            {menuPage === "types" && (
             <div className="space-y-4">
               {personalityMap.map((p) => (
@@ -1006,6 +1012,11 @@ if (phase === "cover") {
             </div>
           )} 
 
+          <div className="pt-6 pb-2 text-center">
+                      <p className="text-[10px] tracking-wide text-gray-400 whitespace-nowrap">
+                        © 2026 Graphic Center Niigata / Haga Masaaki
+                      </p>
+          </div>
 
 
           </div>
@@ -1403,6 +1414,13 @@ if (phase === "phaseIntro") {
           >
             TOPへ戻る
           </button>
+
+          <div className="pt-6 pb-2 text-center">
+            <p className="text-[10px] tracking-wide text-gray-400 whitespace-nowrap">
+              © 2026 Graphic Center Niigata / Haga Masaaki
+            </p>
+          </div>
+
         </div>
       </div>
     );
@@ -1510,6 +1528,9 @@ if (phase === "phaseIntro") {
         >
           次　へ
         </button>
+
+    
+
       </div>
     </div>
   );
