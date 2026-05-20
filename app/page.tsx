@@ -828,7 +828,7 @@ if (phase === "cover") {
   return (
     <div className="min-h-[100dvh] w-screen overflow-x-hidden">
       <div
-        className="relative w-screen min-h-[100dvh] px-5 py-6 bg-cover bg-center bg-no-repeat"
+        className="relative w-screen min-h-[100dvh] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/top-in.png')" }}
       >
 
