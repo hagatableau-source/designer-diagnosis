@@ -421,9 +421,9 @@ const [phase, setPhase] = useState<Phase>("cover");
     ([key]) => key !== "dummy"
   );
 
-  const lowAxisCount = realScores.filter(([, v]) => v <= 12).length;
-  const highAxisCount = realScores.filter(([, v]) => v >= 30).length;
-  const superAxisCount = realScores.filter(([, v]) => v >= 30).length;
+  const lowAxisCount = realScores.filter(([, v]) => v <= 15).length;
+  const highAxisCount = realScores.filter(([, v]) => v >= 35).length;
+  const superAxisCount = realScores.filter(([, v]) => v >= 35).length;
 
     let level = "初級";
 
@@ -748,9 +748,9 @@ const [phase, setPhase] = useState<Phase>("cover");
       ([key]) => key !== "dummy"
   );
 
-  const lowAxisCount = realScores.filter(([, v]) => v <= 12).length;
-  const highAxisCount = realScores.filter(([, v]) => v >= 30).length;
-  const superAxisCount = realScores.filter(([, v]) => v >= 30).length;
+  const lowAxisCount = realScores.filter(([, v]) => v <= 15).length;
+  const highAxisCount = realScores.filter(([, v]) => v >= 35).length;
+  const superAxisCount = realScores.filter(([, v]) => v >= 35).length;
 
   let finalLevel = "初級";
 
