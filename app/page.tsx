@@ -1092,10 +1092,7 @@ if (phase === "cover") {
               ←
             </button>
 
-            <div className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm">
-              <Brain className="w-4 h-4" />
-              Design Cognitive Analysis
-            </div>
+            
 
           </div>
 
@@ -1197,10 +1194,7 @@ if (phase === "phaseIntro") {
       style={{ backgroundImage: "url('/bg.png')" }}
     >
       <div className="min-h-[100dvh] px-8 py-8 space-y-8 text-center flex flex-col justify-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm mx-auto">
-          <Brain className="w-4 h-4" />
-          Cognitive Phase
-        </div>
+        
 
         {introPhase === 1 && (
           <>
@@ -1282,9 +1276,7 @@ if (phase === "phaseIntro") {
   <div
     className="w-screen min-h-[100dvh] px-5 py-6 space-y-8 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/bg.png')" }}
-        >      <div className="inline-flex items-center rounded-full bg-black text-white px-4 py-2 text-sm">
-            AI Cognitive Analysis Report
-          </div>
+        >      
 
           <div>
             <p className="text-neutral-400">あなたは</p>
@@ -1477,10 +1469,7 @@ if (phase === "phaseIntro") {
   style={{ backgroundImage: "url('/bg.png')" }}
 >
   <div className="min-h-[100dvh] px-5 py-6">
-        <div className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm">
-          <Brain className="w-4 h-4" />
-          Cognitive Observation
-        </div>
+        
 
         <div className="mt-8 text-sm text-neutral-400">
           Question {step + 1} / {shuffledQuestions.length}
