@@ -290,6 +290,14 @@ function getChoicePoint(phase: "rank" | "remove" | "add", index: number) {
   return 0;
 }
 
+
+
+function shuffleArray<T>(array: readonly T[]) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+
+
 function calculateScores(records: AnswerRecord[]) {
   const scores: Record<Axis, number> = {
     structure: 0,
@@ -300,6 +308,7 @@ function calculateScores(records: AnswerRecord[]) {
     obsession: 0,
     dummy: 0,
   };
+
 
   records.forEach((a) => {
    // Phase1
@@ -364,6 +373,9 @@ const [phase, setPhase] = useState<Phase>("cover");
   const [sessionId, setSessionId] = useState("");
   const [step, setStep] = useState(0);
 
+  const [shuffledQuestions, setShuffledQuestions] =
+    useState(observationQuestions);
+
 
   useEffect(() => {
   window.scrollTo({
@@ -387,7 +399,7 @@ const [phase, setPhase] = useState<Phase>("cover");
 
   const [introPhase, setIntroPhase] = useState<1 | 2 | 3>(1);
 
-  const current = observationQuestions[step];
+  const current = shuffledQuestions[step];
 
   const analysis = useMemo(() => {
     const scores = calculateScores(answers);
@@ -421,9 +433,9 @@ const [phase, setPhase] = useState<Phase>("cover");
     ([key]) => key !== "dummy"
   );
 
-  const lowAxisCount = realScores.filter(([, v]) => v <= 15).length;
-  const highAxisCount = realScores.filter(([, v]) => v >= 35).length;
-  const superAxisCount = realScores.filter(([, v]) => v >= 35).length;
+  const lowAxisCount = realScores.filter(([, v]) => v <= 12).length;
+  const highAxisCount = realScores.filter(([, v]) => v >= 33).length;
+  const superAxisCount = realScores.filter(([, v]) => v >= 33).length;
 
     let level = "初級";
 
@@ -557,8 +569,39 @@ const [phase, setPhase] = useState<Phase>("cover");
     }
 
     setSessionId(data.id);
-    setIntroPhase(1);
-    setPhase("phaseIntro");
+
+setShuffledQuestions(() => {
+  const rankQuestions = observationQuestions
+    .filter((q) => q.phase === "rank")
+    .map((q) => ({
+      ...q,
+      choices: shuffleArray(q.choices ?? []),
+    }));
+
+  const removeQuestions = observationQuestions
+    .filter((q) => q.phase === "remove")
+    .map((q) => ({
+      ...q,
+      choices: shuffleArray(q.choices ?? []),
+    }));
+
+  const addQuestions = observationQuestions
+    .filter((q) => q.phase === "add")
+    .map((q) => ({
+      ...q,
+      choices: shuffleArray(q.choices ?? []),
+    }));
+
+  return [
+    ...shuffleArray(rankQuestions),
+    ...shuffleArray(removeQuestions),
+    ...shuffleArray(addQuestions),
+  ];
+});
+
+setIntroPhase(1);
+setPhase("phaseIntro");
+
   }
 
   function toggleRank(choice: ObservationChoice) {
@@ -662,7 +705,7 @@ const [phase, setPhase] = useState<Phase>("cover");
   // Phase1終了 → Phase2扉
   if (
     current.phase === "rank" &&
-    observationQuestions[step + 1]?.phase === "remove"
+    shuffledQuestions[step + 1]?.phase === "remove"
   ) {
     setIntroPhase(2);
     setPhase("phaseIntro");
@@ -673,7 +716,7 @@ const [phase, setPhase] = useState<Phase>("cover");
   // Phase2終了 → Phase3扉
   if (
     current.phase === "remove" &&
-    observationQuestions[step + 1]?.phase === "add"
+    shuffledQuestions[step + 1]?.phase === "add"
   ) {
     setIntroPhase(3);
     setPhase("phaseIntro");
@@ -682,7 +725,7 @@ const [phase, setPhase] = useState<Phase>("cover");
   }
 
 
-  if (step < observationQuestions.length - 1) {
+  if (step < shuffledQuestions.length - 1) {
     setStep((s) => s + 1);
     return;
   }
@@ -748,9 +791,9 @@ const [phase, setPhase] = useState<Phase>("cover");
       ([key]) => key !== "dummy"
   );
 
-  const lowAxisCount = realScores.filter(([, v]) => v <= 15).length;
-  const highAxisCount = realScores.filter(([, v]) => v >= 35).length;
-  const superAxisCount = realScores.filter(([, v]) => v >= 35).length;
+  const lowAxisCount = realScores.filter(([, v]) => v <= 12).length;
+  const highAxisCount = realScores.filter(([, v]) => v >= 33).length;
+  const superAxisCount = realScores.filter(([, v]) => v >= 33).length;
 
   let finalLevel = "初級";
 
@@ -1438,7 +1481,7 @@ if (phase === "phaseIntro") {
         </div>
 
         <div className="mt-8 text-sm text-neutral-400">
-          Question {step + 1} / {observationQuestions.length}
+          Question {step + 1} / {shuffledQuestions.length}
         </div>
 
         <h1 className="mt-3 text-3xl leading-tight font-bold">
