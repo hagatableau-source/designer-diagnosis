@@ -855,7 +855,7 @@ setPhase("phaseIntro");
   }
 
   // ④ DB保存も確定結果で保存
-await supabase.from("results").insert({
+const resultInsert = {
   session_id: sessionId,
 
   nickname: profile.name,
@@ -875,7 +875,16 @@ await supabase.from("results").insert({
   is_super: finalLevel === "超級",
 
   ai_comment: aiComment,
-});
+};
+
+const { error: resultError } = await supabase
+  .from("results")
+  .insert(resultInsert);
+
+if (resultError) {
+  console.error("results insert error:", resultError);
+  alert("結果の保存に失敗しました。consoleを確認してください。");
+}
 
   setPhase("result");
 
