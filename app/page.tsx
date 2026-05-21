@@ -855,13 +855,27 @@ setPhase("phaseIntro");
   }
 
   // ④ DB保存も確定結果で保存
-  await supabase.from("results").insert({
-    session_id: sessionId,
-    top_type: finalTopType,
-    level: finalLevel,
-    design_cognition_score: Math.round(finalTotal),
-    is_super: finalLevel === "超級",
-  });
+await supabase.from("results").insert({
+  session_id: sessionId,
+
+  nickname: profile.name,
+  email: profile.email,
+  age: profile.age,
+  designer_experience: profile.experience,
+
+  scores: finalScores,
+  top_axes: topTwoAxes,
+  personality_key: personality.key,
+  personality_title: personality.title,
+  result_title: finalTitle,
+
+  top_type: finalTopType,
+  level: finalLevel,
+  design_cognition_score: Math.round(finalTotal),
+  is_super: finalLevel === "超級",
+
+  ai_comment: aiComment,
+});
 
   setPhase("result");
 
