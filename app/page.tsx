@@ -837,22 +837,26 @@ setPhase("phaseIntro");
     }),
   });
 
-  if (commentRes.ok) {
-    const commentData = await commentRes.json();
+  let finalAiComment: AiComment;
 
-    setAiComment({
-      ...commentData,
-      adjustments,
-    });
-  } else {
-    setAiComment({
-      summary: "AI総評の生成に失敗しました",
-      strength: "",
-      risk: "",
-      aiNote: "",
-      adjustments,
-    });
-  }
+if (commentRes.ok) {
+  const commentData = await commentRes.json();
+
+  finalAiComment = {
+    ...commentData,
+    adjustments,
+  };
+} else {
+  finalAiComment = {
+    summary: "AI総評の生成に失敗しました",
+    strength: "",
+    risk: "",
+    aiNote: "",
+    adjustments,
+  };
+}
+
+setAiComment(finalAiComment);
 
   // ④ DB保存も確定結果で保存
 const resultInsert = {
@@ -874,7 +878,7 @@ const resultInsert = {
   design_cognition_score: Math.round(finalTotal),
   is_super: finalLevel === "超級",
 
-  ai_comment: aiComment,
+  ai_comment: finalAiComment,
 };
 
 const { error: resultError } = await supabase
@@ -883,7 +887,7 @@ const { error: resultError } = await supabase
 
 if (resultError) {
   console.error("results insert error:", resultError);
-  alert("結果の保存に失敗しました。consoleを確認してください。");
+  alert(JSON.stringify(resultError));
 }
 
   setPhase("result");
