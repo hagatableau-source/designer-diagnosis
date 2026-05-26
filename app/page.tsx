@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { Brain, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import {
   observationQuestions,
@@ -396,8 +396,13 @@ const [phase, setPhase] = useState<Phase>("cover");
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);
   const [aiComment, setAiComment] = useState<AiComment | null>(null);
   const [saving, setSaving] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [menuPage, setMenuPage] = useState<"about" | "types">("about");
+
+const [showMenu, setShowMenu] = useState(false);
+
+const [openAbout, setOpenAbout] = useState(false);
+const [openMethod, setOpenMethod] = useState(false);
+const [openTypes, setOpenTypes] = useState(false);
+
 
   const [introPhase, setIntroPhase] = useState<1 | 2 | 3>(1);
 
@@ -903,161 +908,217 @@ if (phase === "cover") {
         className="relative w-screen min-h-[100dvh] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/top-in.png')" }}
       >
+        <button
+          type="button"
+          onClick={() => setShowMenu((v) => !v)}
+          className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full border border-white/30 bg-white/80 text-neutral-700 flex items-center justify-center"
+        >
+          ☰
+        </button>
 
-      {/* TOP右上のinfo */}
+        <button
+          type="button"
+          onClick={() => setPhase("profile")}
+          className={coverButtonClass}
+        >
+          解 析 を 開 始 す る
+        </button>
+
+{showMenu && (
+  <div className="fixed inset-0 z-[9999] bg-black/30 px-5 py-6">
+    <div className="ml-auto w-72 rounded-3xl bg-white border border-neutral-200 shadow-xl overflow-hidden">
       <button
-        type="button"
-        onClick={() => setShowMenu(true)}
-        className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full border border-white/30 bg-white/80 text-neutral-700 flex items-center justify-center"
+        onClick={() => setShowMenu(false)}
+        className="w-full px-5 py-4 text-right text-sm border-b border-neutral-100"
       >
-        ☰
+        ✕
       </button>
 
       <button
-        type="button"
-        onClick={() => setPhase("profile")}
-        className={coverButtonClass}
+        onClick={() => {
+          setOpenAbout(true);
+          setShowMenu(false);
+          setTimeout(() => {
+            document.getElementById("about-section")?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        }}
+        className="w-full px-5 py-4 text-left text-sm border-b border-neutral-100"
       >
-        解 析 を 開 始 す る
+        認知解析システムについて
       </button>
 
+      <button
+        onClick={() => {
+          setOpenMethod(true);
+          setShowMenu(false);
+          setTimeout(() => {
+            document.getElementById("method-section")?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        }}
+        className="w-full px-5 py-4 text-left text-sm border-b border-neutral-100"
+      >
+        認知解析軸について
+      </button>
 
-      <p className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-[10px] tracking-wide text-gray-500 whitespace-nowrap">  
-       © 2026 Graphic Center Niigata / Haga Masaaki
-      </p>
+      <button
+        onClick={() => {
+          setOpenTypes(true);
+          setShowMenu(false);
+          setTimeout(() => {
+            document.getElementById("types-section")?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        }}
+        className="w-full px-5 py-4 text-left text-sm border-b border-neutral-100"
+      >
+        認知タイプについて
+      </button>
 
-      {showMenu && (
-        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
-          <div
-            className="min-h-[100dvh] bg-cover bg-center px-5 py-6"
-            style={{ backgroundImage: "url('/bg.png')" }}
+      <button
+        onClick={() => {
+          setShowMenu(false);
+          setTimeout(() => {
+            document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
+        }}
+        className="w-full px-5 py-4 text-left text-sm"
+      >
+        お問い合わせ
+      </button>
+    </div>
+  </div>
+)}
+        
+      </div>
+
+      <div
+        className="w-screen bg-cover bg-center bg-no-repeat px-5 py-10 space-y-10"
+        style={{ backgroundImage: "url('/bg.png')" }}
+      >
+        <section id="about-section" className="space-y-5">
+  <button
+    onClick={() => setOpenAbout((v) => !v)}
+    className="w-full flex items-center justify-between text-left"
+  >
+    <h2 className="text-xl font-bold leading-tight">
+      認知解析システムについて
+    </h2>
+    <span className="text-xl">{openAbout ? "−" : "＋"}</span>
+  </button>
+
+  {openAbout && (
+    <>
+      <p className="text-neutral-600 leading-8">
+            このシステムは、あなたが無意識に「何を見てしまうのか」を解析するためのものです。
+            デザインの上手さや技術力を測るものではありません。
+            認知解析は次の６軸で判定します。
+            情報構築（Structure）、
+            UX認知（UX）、
+            空気演出（Atmosphere）、
+            抽象理解（Abstract）、
+            感覚認知（Sensory）、
+            観察執着（Obsession）。
+            認知軸の説明は認知解析軸についてをご覧ください。
+          </p>
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
+            <div className="font-bold">認知解析から見えるタイプ</div>
+            <p className="text-sm text-neutral-500 leading-7">
+              6つの認知軸の組み合わせにより、あなたの認知タイプが15種類から判定されます。
+              これは職業適性だけでなく、あなたが世界をどう見ているかを可視化するものです。
+              また、最終画面では回答の組み合わせからAIによる総評があります。
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
+            <div className="font-bold">上級・超級判定</div>
+            <p className="text-sm text-neutral-500 leading-7">
+              認知の欠損が少なく、複数の認知軸が強く出た場合、
+              上級または超級として判定されます。
+              上級・超級には、認知解析証明ワッペンが表示されます。
+              営業資料・SNS・ポートフォリオなど、
+              自由に使用していただいて問題ありません。
+              解析、ワッペンのご利用は無料です。
+              初級か中級判定が一般的です。
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
+            <div className="font-bold">入力について</div>
+            <p className="text-sm text-neutral-500 leading-7 whitespace-pre-line">
+              名前・メールアドレス・年代・デザイン歴を入力してください。
+              名前はニックネームでも問題ありません。
+              上級以上になるとワッペンが表示されます。
+              ここに入力された名前・メールアドレスが表示されます。
+
+              年代は、できるだけ実年齢に近いものを選択してください。
+
+              デザイン歴は、職業デザイナーに限りません。
+              趣味・創作活動・設計・ものづくり・SNS運用など、
+              「デザイン的に考えた経験」も含めて入力して構いません。
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
+            <div className="font-bold">解析について</div>
+            <p className="text-sm text-neutral-500 leading-7">
+              解析開始後は、前の問題へ戻ることはできません。
+              考え込みすぎず、直感的に選択してください。
+            </p>
+          </div>
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
+            <div className="font-bold">プライバシーについて</div>
+            <p className="text-sm text-neutral-500 leading-7">
+              入力されたメールアドレスは、
+              認知解析システム以外の目的で使用されることはありません。
+            </p>
+          </div>
+    </>
+  )}
+        </section>
+
+        <section id="method-section" className="space-y-4">
+          <button
+            onClick={() => setOpenMethod((v) => !v)}
+            className="w-full flex items-center justify-between text-left"
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="font-bold text-lg"></div>
+            <h2 className="text-xl font-bold leading-tight">認知解析軸について</h2>
+            <span className="text-xl">{openMethod ? "−" : "＋"}</span>
+          </button>
 
-              <button
-                onClick={() => setShowMenu(false)}
-                className="w-10 h-10 rounded-full bg-black text-white"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 mb-6">
-              <button
-                onClick={() => setMenuPage("about")}
-                className={`rounded-full py-3 text-sm font-semibold ${
-                  menuPage === "about"
-                    ? "bg-[#2a2633] text-white"
-                    : "bg-white border border-neutral-200 text-neutral-600"
-                }`}
-              >
-                認知解析システム
-              </button>
-
-              <button
-                onClick={() => setMenuPage("types")}
-                className={`rounded-full py-3 text-sm font-semibold ${
-                  menuPage === "types"
-                    ? "bg-[#2a2633] text-white"
-                    : "bg-white border border-neutral-200 text-neutral-600"
-                }`}
-              >
-                15人の認知者
-              </button>
-            </div>
-
-            {menuPage === "about" && (
-            <div className="space-y-5">
-              <h2 className="text-3xl font-bold leading-tight">
-                認知解析システムについて
-              </h2>
-
-              <p className="text-neutral-600 leading-8">
-                このシステムは、あなたが無意識に「何を見てしまうのか」を解析するためのものです。
-                デザインの上手さや技術力を測るものではありません。
-              </p>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">解析する6つの認知軸</div>
-
-                <div className="grid grid-cols-2 gap-2 text-sm text-neutral-600">
-                  <div>情報構築</div>
-                  <div>UX認知</div>
-                  <div>空気演出</div>
-                  <div>抽象理解</div>
-                  <div>感覚認知</div>
-                  <div>観察執着</div>
+          {openMethod && (
+            <div className="space-y-4">
+              {[
+                ["情報構築（Structure）", "情報構築は、「複雑な情報を整理して構造化する力」です。バラバラな情報をそのまま受け取るのではなく、順番・関係性・優先順位を整理し、“理解できる形”へ組み替えようとします。"],
+                ["UX認知（UX）", "UX認知は、「人がなぜそう行動するのかを理解しようとする力」です。人の選択、迷い、感情変化、使いやすさなどを、“人間行動の流れ”として捉えます。"],
+                ["空気演出（Atmosphere）", "空気演出は、「場の雰囲気や世界観を作り出す力」です。空間の温度感、余白、距離感、言葉選びなどを統合し、“その場の空気”として調整しようとします。"],
+                ["抽象理解（Abstract）", "抽象理解は、「目に見えない概念や意味を理解する力」です。言葉の表面だけでなく、その背景にある思想、本質、文脈を捉えようとします。"],
+                ["感覚認知（Sensory）", "感覚認知は、「美しさや違和感を身体感覚として捉える力」です。色、音、質感、余白、リズムなどへの反応が強く、“感覚的な心地よさ”を認識します。"],
+                ["観察執着（Obsession）", "観察執着は、「対象を深く観察し続ける力」です。普通なら見過ごす細部やズレにも反応し、“もっと見たい・もっと理解したい”が止まりません。"],
+              ].map(([title, text]) => (
+                <div key={title} className="rounded-2xl bg-white/80 border border-neutral-200 p-5">
+                  <div className="font-bold">{title}</div>
+                  <p className="text-sm text-neutral-500 leading-7 mt-2">{text}</p>
                 </div>
-              </div>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">15人の認知者</div>
-
-                <p className="text-sm text-neutral-500 leading-7">
-                  6つの認知軸の組み合わせから、あなたの認知タイプを15種類の人格として判定します。
-                  これは職業適性だけでなく、あなたが世界をどう見ているかを可視化するものです。
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">上級・超級判定</div>
-
-                <p className="text-sm text-neutral-500 leading-7">
-                  認知の欠損が少なく、複数の認知軸が強く出た場合、
-                  上級または超級として判定されます。
-                  上級・超級には、認知解析証明ワッペンが表示されます。
-                  営業資料・SNS・ポートフォリオなど、
-                  自由に使用していただいて問題ありません。
-                  解析、ワッペンのご利用は無料です。
-                  一般的には、初級か中級判定です。
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">入力について</div>
-
-                <p className="text-sm text-neutral-500 leading-7 whitespace-pre-line">
-                  名前・メールアドレス・年代・デザイン歴を入力してください。
-                  名前はニックネームでも問題ありません。
-                  上級以上になるとワッペンが表示されます。
-                  ここに入力された名前・メールアドレスが表示されます。
-
-                  年代は、できるだけ実年齢に近いものを選択してください。
-
-                  デザイン歴は、職業デザイナーに限りません。
-                  趣味・創作活動・設計・ものづくり・SNS運用など、
-                  「デザイン的に考えた経験」も含めて入力して構いません。
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">解析について</div>
-
-                <p className="text-sm text-neutral-500 leading-7">
-                  解析開始後は、前の問題へ戻ることはできません。
-                  考え込みすぎず、直感的に選択してください。
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5 space-y-4">
-                <div className="font-bold">プライバシーについて</div>
-
-                <p className="text-sm text-neutral-500 leading-7">
-                  入力されたメールアドレスは、
-                  認知解析システム以外の目的で使用されることはありません。
-                </p>
-              </div>
-
-
+              ))}
             </div>
           )}
+        </section>
 
+        <section id="types-section" className="space-y-4">
+          <button
+            onClick={() => setOpenTypes((v) => !v)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <h2 className="text-xl font-bold leading-tight">認知タイプについて</h2>
+            <span className="text-xl">{openTypes ? "−" : "＋"}</span>
+          </button>
 
-           {menuPage === "types" && (
+          {openTypes && (
             <div className="space-y-4">
               {personalityMap.map((p) => (
                 <div
+                  id={`type-${p.key}`}
                   key={p.key}
                   className="rounded-3xl overflow-hidden bg-white/80 border border-neutral-200"
                 >
@@ -1069,7 +1130,6 @@ if (phase === "cover") {
 
                   <div className="p-5">
                     <div className="font-bold text-2xl">{p.title}</div>
-
                     <div className="text-xs text-neutral-400 mt-1">
                       {p.axes.join(" + ")}
                     </div>
@@ -1081,19 +1141,24 @@ if (phase === "cover") {
                 </div>
               ))}
             </div>
-          )} 
+          )}
+        </section>
 
-          <div className="pt-6 pb-2 text-center">
-                      <p className="text-[10px] tracking-wide text-gray-400 whitespace-nowrap">
-                        © 2026 Graphic Center Niigata / Haga Masaaki
-                      </p>
+        <section id="contact-section" className="space-y-4">
+
+          <div className="rounded-2xl bg-white/80 border border-neutral-200 p-5">
+            <p className="text-sm text-neutral-500 leading-7">
+              お問い合わせは、Graphic Center Niigata / mail@tableau.co.jp までお願いいたします。
+            </p>
           </div>
+        </section>
 
-
-          </div>
+        <div className="pt-6 pb-2 text-center">
+          <p className="text-[10px] tracking-wide text-gray-400 whitespace-nowrap">
+            © 2026 Graphic Center Niigata / Haga Masaaki
+          </p>
         </div>
-      )}
-    </div>
+      </div>
     </div>
   );
 }
